@@ -1,0 +1,20 @@
+{% extends 'diary/base.html' %}
+
+{% block title %}My Diary{% endblock %}
+
+{% block content %}
+    <h2>Your Photo Diary</h2>
+    {% for date, photos in grouped_photos.items %}
+        <h3>{{ date }}</h3>
+        <div style="display:flex; gap:15px;">
+            {% for photo in photos %}
+                <div>
+                    <img src="{{ photo.photo.url }}" width="150" height="150" alt="{{ photo.caption }}">
+                    <p>{{ photo.caption }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <p>No photos uploaded yet.</p>
+    {% endfor %}
+{% endblock %}
