@@ -3,18 +3,36 @@
 {% block title %}My Diary{% endblock %}
 
 {% block content %}
-    <h2>Your Photo Diary</h2>
+<h2>My Photo Diary</h2>
+
+{% if grouped_photos %}
     {% for date, photos in grouped_photos.items %}
         <h3>{{ date }}</h3>
-        <div style="display:flex; gap:15px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
             {% for photo in photos %}
-                <div>
+                <div style="background: white; padding: 10px; border-radius: 8px; width: 180px; text-align: center;">
                     <img src="{{ photo.photo.url }}" width="150" height="150" alt="{{ photo.caption }}">
                     <p>{{ photo.caption }}</p>
+                    {% if user == photo.user %}
+                        <a href="{% url 'photo_edit' photo.pk %}">Edit</a> |
+                        <a href="{% url 'photo_delete' photo.pk %}">Delete</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
-    {% empty %}
-        <p>No photos uploaded yet.</p>
     {% endfor %}
+{% else %}
+    <p>No photos uploaded yet.</p>
+{% endif %}
+
+<!-- Pagination -->
+<div style="margin-top: 20px;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>
 {% endblock %}

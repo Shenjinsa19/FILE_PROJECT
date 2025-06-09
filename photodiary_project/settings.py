@@ -56,7 +56,7 @@ ROOT_URLCONF = 'photodiary_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'diary' / 'templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,12 +123,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-
 #for file upload
 import os
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGOUT_REDIRECT_URL = 'login'
+
+LOGIN_REDIRECT_URL = '/'

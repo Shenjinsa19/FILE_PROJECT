@@ -38,7 +38,6 @@
         {% if user.is_authenticated %}
             <a href="{% url 'upload_photo' %}">Upload Photo</a>
 
-            <!-- ✅ Secure logout form using POST -->
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
