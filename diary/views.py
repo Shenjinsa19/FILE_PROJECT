@@ -79,7 +79,7 @@ def home(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     grouped_photos = {}
-    for photo in page_obj:
+    for photo in page_obj:        #in each page display by -date
         date_str = photo.date_uploaded.date().strftime('%Y-%m-%d')
         grouped_photos.setdefault(date_str, []).append(photo)
     context = {
