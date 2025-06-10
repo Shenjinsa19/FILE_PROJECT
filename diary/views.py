@@ -47,22 +47,20 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class PhotoEntryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = PhotoEntry
-    fields = ['photo', 'caption']
-    template_name = 'diary/photo_edit.html'
-    success_url = reverse_lazy('home')
-
+    model=PhotoEntry
+    fields=['photo', 'caption']
+    template_name='diary/photo_edit.html'
+    success_url=reverse_lazy('home')
     def test_func(self):
-        return self.request.user == self.get_object().user
+        return self.request.user==self.get_object().user
 
 
 class PhotoEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = PhotoEntry
-    template_name = 'diary/photo_delete.html'
-    success_url = reverse_lazy('home')
-
+    model=PhotoEntry
+    template_name='diary/photo_delete.html'
+    success_url=reverse_lazy('home')
     def test_func(self):
-        return self.request.user == self.get_object().user
+        return self.request.user==self.get_object().user
 
 
 
@@ -73,22 +71,17 @@ class PhotoEntryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 from django.core.paginator import Paginator
 from collections import defaultdict
-
 from django.core.paginator import Paginator
 @login_required
 def home(request):
     photos = PhotoEntry.objects.filter(user=request.user).order_by('-date_uploaded')
-    
-    paginator = Paginator(photos, 2)  # 2 photos per page for example
+    paginator = Paginator(photos, 2) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    # Group photos by date but only for photos on the current page:
     grouped_photos = {}
     for photo in page_obj:
         date_str = photo.date_uploaded.date().strftime('%Y-%m-%d')
         grouped_photos.setdefault(date_str, []).append(photo)
-    
     context = {
         'grouped_photos': grouped_photos,
         'page_obj': page_obj,
